@@ -30,8 +30,20 @@ def betterCode():
     
     return primes
 
+def prime_factors(n, primes):
+    unique_primes = []
+    for prime in primes:
+        while n % prime == 0:
+            unique_primes.append(prime)
+            n //= prime
+    if n > 1:
+        unique_primes.append(n)
+    return unique_primes
+
+
 # Benchmark the code
 if __name__ == "__main__":
+
     benchmark_code = "betterCode()"
     setup_code = "from __main__ import betterCode"
 
@@ -43,3 +55,15 @@ if __name__ == "__main__":
     res = sum(times)/5
 
     print(f"Average execution time after 5 runs: {res:.6f} seconds")
+
+    
+    benchmark_code = "prime_factors(2500, primes)"
+    setup_code = "from __main__ import prime_factors, betterCode\nprimes = betterCode()"
+    
+    times = []
+    for i in range(0,5):
+        times.append(timeit.timeit(benchmark_code, setup=setup_code, number=1))
+
+    res = sum(times)/5
+
+    print(f"Average execution time of finding the prime factors after 5 runs: {res:.6f} seconds")
